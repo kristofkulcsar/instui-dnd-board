@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { createPortal } from 'react-dom';
 import invariant from 'tiny-invariant';
@@ -141,6 +141,7 @@ const isDraggingStyles = xcss({
 });
 
 export const Column = memo(function Column({ column }: { column: ColumnType }) {
+
 	const columnId = column.columnId;
 	const columnRef = useRef<HTMLDivElement | null>(null);
 	const columnInnerRef = useRef<HTMLDivElement | null>(null);
@@ -257,18 +258,13 @@ export const Column = memo(function Column({ column }: { column: ColumnType }) {
 		);
 	}, [columnId, registerColumn, instanceId]);
 
-	const stableItems = useRef(column.items);
-	useEffect(() => {
-		stableItems.current = column.items;
+	const getCardIndex = useCallback((id: string) => {
+		return column.items.findIndex((item) => item.id === id);
 	}, [column.items]);
 
-	const getCardIndex = useCallback((id: string) => {
-		return stableItems.current.findIndex((item) => item.id === id);
-	}, []);
-
 	const getNumCards = useCallback(() => {
-		return stableItems.current.length;
-	}, []);
+		return column.items.length;
+	}, [column.items]);
 
 	const contextValue: ColumnContextProps = useMemo(() => {
 		return { columnId, getCardIndex, getNumCards };

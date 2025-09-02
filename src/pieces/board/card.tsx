@@ -1,8 +1,7 @@
-import React, {
+import {
 	forwardRef,
 	Fragment,
 	memo,
-	type Ref,
 	useCallback,
 	useEffect,
 	useRef,
@@ -12,15 +11,8 @@ import React, {
 import ReactDOM from 'react-dom';
 import invariant from 'tiny-invariant';
 
-import { IconButton } from '@atlaskit/button/new';
-import DropdownMenu, { DropdownItem, DropdownItemGroup } from '@atlaskit/dropdown-menu';
-// eslint-disable-next-line @atlaskit/design-system/no-banned-imports
-import mergeRefs from '@atlaskit/ds-lib/merge-refs';
 import Heading from '@atlaskit/heading';
-// This is the smaller MoreIcon soon to be more easily accessible with the
-// ongoing icon project
-import MoreIcon from '@atlaskit/icon/core/migration/show-more-horizontal--editor-more';
-import { fg } from '@atlaskit/platform-feature-flags';
+
 import {
 	attachClosestEdge,
 	type Edge,
@@ -39,11 +31,10 @@ import { dropTargetForExternal } from '@atlaskit/pragmatic-drag-and-drop/externa
 import { Box, Grid, Stack, xcss } from '@atlaskit/primitives';
 import { token } from '@atlaskit/tokens';
 
-import { type Column } from '../../types/Column';
 import { type Item } from '../../types/Item';
 
 import { useBoardContext } from './board-context';
-import { useColumnContext } from './column-context';
+import DragHandle from './drag-handle';
 
 type State =
 	| { type: 'idle' }
@@ -53,8 +44,6 @@ type State =
 const idleState: State = { type: 'idle' };
 const draggingState: State = { type: 'dragging' };
 
-const noMarginStyles = xcss({ margin: 'space.0' });
-const noPointerEventsStyles = xcss({ pointerEvents: 'none' });
 const baseStyles = xcss({
 	width: '100%',
 	padding: 'space.100',
@@ -89,88 +78,8 @@ type CardPrimitiveProps = {
 	closestEdge: Edge | null;
 	item: Item;
 	state: State;
-	actionMenuTriggerRef?: Ref<HTMLButtonElement>;
+	actionMenuTriggerRef: (button: Element | null) => void;
 };
-
-function MoveToOtherColumnItem({
-	targetColumn,
-	startIndex,
-}: {
-	targetColumn: Column;
-	startIndex: number;
-}) {
-	const { moveCard } = useBoardContext();
-	const { columnId } = useColumnContext();
-
-	const onClick = useCallback(() => {
-		moveCard({
-			startColumnId: columnId,
-			finishColumnId: targetColumn.columnId,
-			itemIndexInStartColumn: startIndex,
-		});
-	}, [columnId, moveCard, startIndex, targetColumn.columnId]);
-
-	return <DropdownItem onClick={onClick}>{targetColumn.title}</DropdownItem>;
-}
-
-function LazyDropdownItems({ itemId }: { itemId: string }) {
-	const { getColumns, reorderCard } = useBoardContext();
-	const { columnId, getCardIndex, getNumCards } = useColumnContext();
-
-	const numCards = getNumCards();
-	const startIndex = getCardIndex(itemId);
-
-	const moveToTop = useCallback(() => {
-		reorderCard({ columnId, startIndex, finishIndex: 0 });
-	}, [columnId, reorderCard, startIndex]);
-
-	const moveUp = useCallback(() => {
-		reorderCard({ columnId, startIndex, finishIndex: startIndex - 1 });
-	}, [columnId, reorderCard, startIndex]);
-
-	const moveDown = useCallback(() => {
-		reorderCard({ columnId, startIndex, finishIndex: startIndex + 1 });
-	}, [columnId, reorderCard, startIndex]);
-
-	const moveToBottom = useCallback(() => {
-		reorderCard({ columnId, startIndex, finishIndex: numCards - 1 });
-	}, [columnId, reorderCard, startIndex, numCards]);
-
-	const isMoveUpDisabled = startIndex === 0;
-	const isMoveDownDisabled = startIndex === numCards - 1;
-
-	const moveColumnOptions = getColumns().filter((column) => column.columnId !== columnId);
-
-	return (
-		<Fragment>
-			<DropdownItemGroup title="Reorder">
-				<DropdownItem onClick={moveToTop} isDisabled={isMoveUpDisabled}>
-					Move to top
-				</DropdownItem>
-				<DropdownItem onClick={moveUp} isDisabled={isMoveUpDisabled}>
-					Move up
-				</DropdownItem>
-				<DropdownItem onClick={moveDown} isDisabled={isMoveDownDisabled}>
-					Move down
-				</DropdownItem>
-				<DropdownItem onClick={moveToBottom} isDisabled={isMoveDownDisabled}>
-					Move to bottom
-				</DropdownItem>
-			</DropdownItemGroup>
-			{moveColumnOptions.length ? (
-				<DropdownItemGroup title="Move to">
-					{moveColumnOptions.map((column) => (
-						<MoveToOtherColumnItem
-							key={column.columnId}
-							targetColumn={column}
-							startIndex={startIndex}
-						/>
-					))}
-				</DropdownItemGroup>
-			) : null}
-		</Fragment>
-	);
-}
 
 const CardPrimitive = forwardRef<HTMLDivElement, CardPrimitiveProps>(function CardPrimitive(
 	{ closestEdge, item, state, actionMenuTriggerRef },
@@ -187,33 +96,14 @@ const CardPrimitive = forwardRef<HTMLDivElement, CardPrimitiveProps>(function Ca
 			alignItems="center"
 			xcss={[baseStyles, stateStyles[state.type]]}
 		>
+			<Box xcss={buttonColumnStyles}>
+				<DragHandle {...item} dragHandleTriggerRef={actionMenuTriggerRef} />
+			</Box>
 			<Stack space="space.050" grow="fill">
 				<Heading size="xsmall" as="span">
 					{label}
 				</Heading>
 			</Stack>
-			<Box xcss={buttonColumnStyles}>
-				<DropdownMenu
-					trigger={({ triggerRef, ...triggerProps }) => (
-						<IconButton
-							ref={
-								actionMenuTriggerRef
-									? mergeRefs([triggerRef, actionMenuTriggerRef])
-									: // Workaround for IconButton typing issue
-										mergeRefs([triggerRef])
-							}
-							icon={(iconProps) => <MoreIcon {...iconProps} size="small" />}
-							label={`Move ${name}`}
-							appearance="default"
-							spacing="compact"
-							{...triggerProps}
-						/>
-					)}
-					shouldRenderToParent={fg('should-render-to-parent-should-be-true-design-syst')}
-				>
-					<LazyDropdownItems itemId={id} />
-				</DropdownMenu>
-			</Box>
 			{closestEdge && <DropIndicator edge={closestEdge} gap={token('space.100', '0')} />}
 		</Grid>
 	);
@@ -225,16 +115,22 @@ export const Card = memo(function Card({ item }: { item: Item }) {
 	const [closestEdge, setClosestEdge] = useState<Edge | null>(null);
 	const [state, setState] = useState<State>(idleState);
 
-	const actionMenuTriggerRef = useRef<HTMLButtonElement>(null);
+	const actionMenuTriggerRef = useRef<Element | null>(null);
+
+	const setActionMenuTrigger = useCallback((button: Element | null) => {
+		actionMenuTriggerRef.current = button;
+	}, []);
+
 	const { instanceId, registerCard } = useBoardContext();
 	useEffect(() => {
 		invariant(actionMenuTriggerRef.current);
 		invariant(ref.current);
+		
 		return registerCard({
 			cardId: id,
 			entry: {
 				element: ref.current,
-				actionMenuTrigger: actionMenuTriggerRef.current,
+				actionMenuTrigger: actionMenuTriggerRef.current as HTMLElement,
 			},
 		});
 	}, [registerCard, id]);
@@ -310,7 +206,7 @@ export const Card = memo(function Card({ item }: { item: Item }) {
 				item={item}
 				state={state}
 				closestEdge={closestEdge}
-				actionMenuTriggerRef={actionMenuTriggerRef}
+				actionMenuTriggerRef={setActionMenuTrigger}
 			/>
 			{state.type === 'preview' &&
 				ReactDOM.createPortal(
@@ -328,7 +224,7 @@ export const Card = memo(function Card({ item }: { item: Item }) {
 							height: state.rect.height,
 						}}
 					>
-						<CardPrimitive item={item} state={state} closestEdge={null} />
+						<CardPrimitive item={item} state={state} closestEdge={null} actionMenuTriggerRef={setActionMenuTrigger} />
 					</Box>,
 					state.container,
 				)}
