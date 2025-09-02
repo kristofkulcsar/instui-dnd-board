@@ -1,11 +1,10 @@
 import { createRoot } from 'react-dom/client'
-import '@atlaskit/css-reset';
-import AppProvider from '@atlaskit/app-provider';
+import { InstUISettingsProvider, canvas } from '@instructure/ui'
 
 import Example from './example';
 
 createRoot(document.getElementById('root')!).render(
-  <AppProvider>
+  <InstUISettingsProvider theme={canvas}>
     <Example />
-  </AppProvider>,
+  </InstUISettingsProvider>
 )

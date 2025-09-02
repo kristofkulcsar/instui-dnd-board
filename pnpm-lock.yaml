@@ -8,15 +8,9 @@ importers:
 
   .:
     dependencies:
-      '@atlaskit/app-provider':
-        specifier: latest
-        version: 3.1.0(@types/react@18.3.24)(react@18.3.1)
       '@atlaskit/button':
         specifier: 23.4.3
         version: 23.4.3(@babel/core@7.28.3)(@types/react@18.3.24)(eslint@9.34.0)(prop-types@15.8.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@atlaskit/css-reset':
-        specifier: latest
-        version: 7.3.5(@types/react@18.3.24)(react@18.3.1)
       '@atlaskit/dropdown-menu':
         specifier: 16.3.6
         version: 16.3.6(@babel/core@7.28.3)(@types/react@18.3.24)(eslint@9.34.0)(prop-types@15.8.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -146,11 +140,6 @@ packages:
 
   '@atlaskit/codemod-utils@4.2.5':
     resolution: {integrity: sha512-f7b7/BqfxbPtAfJXXgR8YfzOz9Mj912kBZB5Q/3ykKw9yvT8lQsZj6HOL7qMlHMutzPdz+uuF+duBVjybtNgCg==}
-
-  '@atlaskit/css-reset@7.3.5':
-    resolution: {integrity: sha512-1UZlmdDe6RtVD4/dvPpH7DMTog0xRR81NVD1YiGLt+YwjVgjMJyGRo9bpRRwzn9kBSRov3/mYXFHglrK85r3Vw==}
-    peerDependencies:
-      react: ^18.2.0
 
   '@atlaskit/css@0.12.5':
     resolution: {integrity: sha512-6gttaMnmxKdSC6rEm3yO0OL+Iwc/6VDr4zG0HakY9UUk/BC3ipIc83Y3jMeZZ/vi3qb1Oe4hXz6NYI5ssr0cog==}
@@ -2348,16 +2337,6 @@ snapshots:
   '@atlaskit/codemod-utils@4.2.5':
     dependencies:
       '@babel/runtime': 7.28.3
-
-  '@atlaskit/css-reset@7.3.5(@types/react@18.3.24)(react@18.3.1)':
-    dependencies:
-      '@atlaskit/theme': 20.0.0(@types/react@18.3.24)(react@18.3.1)
-      '@atlaskit/tokens': 6.1.1(@types/react@18.3.24)(react@18.3.1)
-      '@babel/runtime': 7.28.3
-      react: 18.3.1
-    transitivePeerDependencies:
-      - '@types/react'
-      - supports-color
 
   '@atlaskit/css@0.12.5(@types/react@18.3.24)(react@18.3.1)':
     dependencies:
