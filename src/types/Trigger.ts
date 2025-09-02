@@ -1,0 +1,1 @@
+export type Trigger = 'pointer' | 'keyboard';
