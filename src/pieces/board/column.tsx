@@ -290,7 +290,7 @@ export const Column = memo(function Column({ column }: { column: ColumnType }) {
 							spread="space-between"
 							alignBlock="center"
 						>
-							<Text color="primary" size="contentSmall" weight="weightImportant">{column.title}</Text>
+							<Text color="primary" size="content" weight="weightImportant">{column.title}</Text>
 							<ActionMenu />
 						</Inline>
 						<Box xcss={scrollContainerStyles} ref={scrollableRef}>
@@ -323,7 +323,7 @@ const safariPreviewStyles = xcss({
 function SafariColumnPreview({ column }: { column: ColumnType }) {
 	return (
 		<Box xcss={[columnHeaderStyles, safariPreviewStyles]}>
-			<Text color="primary" size="contentSmall" weight="weightImportant">{column.title}</Text>
+			<Text color="primary" size="content" weight="weightImportant">{column.title}</Text>
 		</Box>
 	);
 }

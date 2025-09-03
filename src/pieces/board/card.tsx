@@ -99,7 +99,7 @@ const CardPrimitive = forwardRef<HTMLDivElement, CardPrimitiveProps>(function Ca
 				<DragHandle {...item} dragHandleTriggerRef={actionMenuTriggerRef} />
 			</Box>
 			<Stack space="space.050" grow="fill">
-				<Text variant="contentSmall">{label}</Text>
+				<Text variant="content">{label}</Text>
 			</Stack>
 			{closestEdge && <DropIndicator edge={closestEdge} gap={'8px'} />}
 		</Grid>

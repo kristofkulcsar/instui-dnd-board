@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { IconButton, IconDragHandleLine, Menu } from "@instructure/ui";
+import { IconButton, IconDragHandleSolid, Menu } from "@instructure/ui";
 
 import { useBoardContext } from "./board-context";
 import { useColumnContext } from "./column-context";
@@ -54,7 +54,7 @@ export default function DragHandle({ id, label, dragHandleTriggerRef }: DragHand
         size="small"
         withBorder={false}
       >
-        <IconDragHandleLine />
+        <IconDragHandleSolid />
       </IconButton>
     }>
       <Menu.Group label="Reorder">
