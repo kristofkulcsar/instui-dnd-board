@@ -2,6 +2,18 @@
 
 A React-based drag-and-drop board component built with Instructure UI and Atlassian's Pragmatic Drag and Drop library. This project demonstrates a complete implementation of a board with accessibility features.
 
+## 👨‍💻 Try It Online
+
+Want to see the drag-and-drop board in action? Try the live demo on CodeSandbox:
+
+[![Open in CodeSandbox](https://img.shields.io/badge/Open%20in-CodeSandbox-blue?style=for-the-badge&logo=codesandbox)](https://codesandbox.io/p/github/kristofkulcsar/instui-dnd-board/main?import=true)
+
+The demo includes:
+- Interactive drag-and-drop functionality
+- All accessibility features enabled
+- Sample navigation items to experiment with
+- Real-time preview of the component behavior
+
 ## 🚀 Features
 
 - **Full Drag & Drop Support**: Cards can be reordered within columns and moved between columns
