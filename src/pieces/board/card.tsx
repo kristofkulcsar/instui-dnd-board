@@ -104,7 +104,7 @@ const CardPrimitive = forwardRef<HTMLDivElement, CardPrimitiveProps>(function Ca
 					{label}
 				</Heading>
 			</Stack>
-			{closestEdge && <DropIndicator edge={closestEdge} gap={token('space.100', '0')} />}
+			{closestEdge && <DropIndicator edge={closestEdge} gap={'8px'} />}
 		</Grid>
 	);
 });
