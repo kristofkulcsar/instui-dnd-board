@@ -11,7 +11,7 @@ import DropdownMenu, {
 } from '@atlaskit/dropdown-menu';
 // eslint-disable-next-line @atlaskit/design-system/no-banned-imports
 import mergeRefs from '@atlaskit/ds-lib/merge-refs';
-import Heading from '@atlaskit/heading';
+import { Text } from '@instructure/ui';
 // This is the smaller MoreIcon soon to be more easily accessible with the
 // ongoing icon project
 import MoreIcon from '@atlaskit/icon/core/migration/show-more-horizontal--editor-more';
@@ -34,7 +34,6 @@ import { centerUnderPointer } from '@atlaskit/pragmatic-drag-and-drop/element/ce
 import { setCustomNativeDragPreview } from '@atlaskit/pragmatic-drag-and-drop/element/set-custom-native-drag-preview';
 // eslint-disable-next-line @atlaskit/design-system/no-emotion-primitives -- to be migrated to @atlaskit/primitives/compiled – go/akcss
 import { Box, Flex, Inline, Stack, xcss } from '@atlaskit/primitives';
-import { token } from '@atlaskit/tokens';
 
 import { type Column as ColumnType } from '../../types/Column';
 
@@ -291,9 +290,7 @@ export const Column = memo(function Column({ column }: { column: ColumnType }) {
 							spread="space-between"
 							alignBlock="center"
 						>
-							<Heading size="xxsmall" as="span" testId={`column-header-title-${columnId}`}>
-								{column.title}
-							</Heading>
+							<Text color="primary" size="contentSmall" weight="weightImportant">{column.title}</Text>
 							<ActionMenu />
 						</Inline>
 						<Box xcss={scrollContainerStyles} ref={scrollableRef}>
@@ -326,9 +323,7 @@ const safariPreviewStyles = xcss({
 function SafariColumnPreview({ column }: { column: ColumnType }) {
 	return (
 		<Box xcss={[columnHeaderStyles, safariPreviewStyles]}>
-			<Heading size="xxsmall" as="span">
-				{column.title}
-			</Heading>
+			<Text color="primary" size="contentSmall" weight="weightImportant">{column.title}</Text>
 		</Box>
 	);
 }

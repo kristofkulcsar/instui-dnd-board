@@ -11,7 +11,7 @@ import {
 import ReactDOM from 'react-dom';
 import invariant from 'tiny-invariant';
 
-import Heading from '@atlaskit/heading';
+import { Text } from '@instructure/ui';
 
 import {
 	attachClosestEdge,
@@ -29,7 +29,6 @@ import { setCustomNativeDragPreview } from '@atlaskit/pragmatic-drag-and-drop/el
 import { dropTargetForExternal } from '@atlaskit/pragmatic-drag-and-drop/external/adapter';
 // eslint-disable-next-line @atlaskit/design-system/no-emotion-primitives -- to be migrated to @atlaskit/primitives/compiled – go/akcss
 import { Box, Grid, Stack, xcss } from '@atlaskit/primitives';
-import { token } from '@atlaskit/tokens';
 
 import { type Item } from '../../types/Item';
 
@@ -100,9 +99,7 @@ const CardPrimitive = forwardRef<HTMLDivElement, CardPrimitiveProps>(function Ca
 				<DragHandle {...item} dragHandleTriggerRef={actionMenuTriggerRef} />
 			</Box>
 			<Stack space="space.050" grow="fill">
-				<Heading size="xsmall" as="span">
-					{label}
-				</Heading>
+				<Text variant="contentSmall">{label}</Text>
 			</Stack>
 			{closestEdge && <DropIndicator edge={closestEdge} gap={'8px'} />}
 		</Grid>
